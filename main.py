@@ -58,9 +58,9 @@ class SmartPostingBot:
             'MAX_TWITTER_LENGTH': int(os.getenv('MAX_TWITTER_LENGTH', '280')),
             'SKIP_LONG_POSTS': os.getenv('SKIP_LONG_POSTS', 'True').lower() == 'true',
             'REMOVE_URLS': os.getenv('REMOVE_URLS', 'True').lower() == 'true',
-            'REMOVE_HASHTAGS': os.getenv('REMOVE_HASHTAGS', 'False').lower() == 'true',
-            'REMOVE_MENTIONS': os.getenv('REMOVE_MENTIONS', 'False').lower() == 'true',
-            'ADD_PREFIX': os.getenv('ADD_PREFIX', '📢 '),
+            'REMOVE_HASHTAGS': os.getenv('REMOVE_HASHTAGS', 'True').lower() == 'true',
+            'REMOVE_MENTIONS': os.getenv('REMOVE_MENTIONS', 'True').lower() == 'true',
+            'ADD_PREFIX': os.getenv('ADD_PREFIX', '🚨 '),
             'ADD_SUFFIX': os.getenv('ADD_SUFFIX', ''),
             'REMOVE_EMOJIS': os.getenv('REMOVE_EMOJIS', 'False').lower() == 'true',
             'TRIM_EXTRA_SPACES': os.getenv('TRIM_EXTRA_SPACES', 'True').lower() == 'true'
