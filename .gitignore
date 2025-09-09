@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.log
+.env
+*.session
+temp_media_*
+twitter_media_*
