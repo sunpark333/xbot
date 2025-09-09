@@ -2,7 +2,9 @@ import os
 import logging
 import time
 import re
+import threading
 from urllib.request import urlretrieve
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from telethon.sync import TelegramClient, events
 from telethon.sessions import StringSession
 from tweepy import Client as TwitterClient
@@ -18,6 +20,23 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# Simple health check server
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(b'Bot is running successfully!')
+    
+    def log_message(self, format, *args):
+        # Disable logging to avoid cluttering your bot logs
+        return
+
+def run_health_server():
+    server = HTTPServer(('0.0.0.0', 8000), HealthHandler)
+    logger.info("Health check server started on port 8000")
+    server.serve_forever()
 
 class SmartPostingBot:
     def __init__(self):
@@ -261,22 +280,7 @@ class SmartPostingBot:
         self.client.run_until_disconnected()
 
 if __name__ == "__main__":
-    import os
-    import threading
-    from http.server import HTTPServer, BaseHTTPRequestHandler
-    
-    # Simple health check server
-    class HealthHandler(BaseHTTPRequestHandler):
-        def do_GET(self):
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b"Bot is running")
-    
-    def run_health_server():
-        server = HTTPServer(('0.0.0.0', 8000), HealthHandler)
-        server.serve_forever()
-    
-    # Start health server in background
+    # Start health server in background thread
     health_thread = threading.Thread(target=run_health_server, daemon=True)
     health_thread.start()
     
