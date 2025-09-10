@@ -261,5 +261,25 @@ class SmartPostingBot:
         self.client.run_until_disconnected()
 
 if __name__ == "__main__":
+    import os
+    import threading
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    
+    # Simple health check server
+    class HealthHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"Bot is running")
+    
+    def run_health_server():
+        server = HTTPServer(('0.0.0.0', 8000), HealthHandler)
+        server.serve_forever()
+    
+    # Start health server in background
+    health_thread = threading.Thread(target=run_health_server, daemon=True)
+    health_thread.start()
+    
+    # Start the bot
     bot = SmartPostingBot()
     bot.run()
